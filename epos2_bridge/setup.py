@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'epos2_j3_bridge = epos2_bridge.epos2_j3_bridge:main',
+            'epos2_arm_controller = epos2_bridge.epos2_arm_controller:main',
         ],
     },
 )
