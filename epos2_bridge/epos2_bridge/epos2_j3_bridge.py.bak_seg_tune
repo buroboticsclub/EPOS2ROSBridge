@@ -1049,8 +1049,8 @@ class Epos2J3Bridge(Node):
         duration_sec = max(0.02, float(duration_sec))
         total_ms = int(round(duration_sec * 1000.0))
 
-        min_seg_ms = 60
-        max_seg_ms = 100
+        min_seg_ms = 20
+        max_seg_ms = 80
 
         n_segments = max(1, math.ceil(total_ms / max_seg_ms))
         seg_ms = max(min_seg_ms, min(max_seg_ms, int(round(total_ms / n_segments))))
@@ -1064,9 +1064,8 @@ class Epos2J3Bridge(Node):
             seg_target_qc = int(round(start_qc + frac * (target_qc - start_qc)))
             seg_delta_qc = seg_target_qc - prev_qc
 
-            if abs(seg_delta_qc) <= 2:
+            if seg_delta_qc == 0:
                 motor_rpm = 0
-                seg_target_qc = prev_qc
             else:
                 motor_rpm = int(
                     math.ceil(
@@ -1074,7 +1073,7 @@ class Epos2J3Bridge(Node):
                         / (self.kin.encoder_qc_per_motor_rev * seg_s)
                     )
                 )
-                motor_rpm = max(2, motor_rpm)
+                motor_rpm = max(1, motor_rpm)
                 if seg_delta_qc < 0:
                     motor_rpm = -motor_rpm
 
